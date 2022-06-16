@@ -68,7 +68,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'sharpshooter_club.wsgi.application'
+WSGI_APPLICATION = 'settings.wsgi.application'
 
 
 # Database
