@@ -22,3 +22,5 @@ pytest==7.1.2
 python-coveralls==2.9.3
 sphinx==5.0.2
 django-debug-toolbar==3.5.0
+
+python_dotenv==0.20.0
