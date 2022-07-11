@@ -5,4 +5,4 @@ from django.db import models
 
 # Create your models here.
 class Users(AbstractUser):
-    pass
+    user = models.CharField(max_length=45)
