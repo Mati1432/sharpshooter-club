@@ -4,5 +4,5 @@ from django.db import models
 
 
 # Create your models here.
-class users(AbstractUser):
+class Users(AbstractUser):
     pass
