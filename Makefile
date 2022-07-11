@@ -31,8 +31,12 @@ create_superuser:
 run_fixtures:
 	$(PYTHON) manage.py loaddata $(SETTINGS) $(shell bash -c 'read -s -p "Fixture name: " fixture; echo $$fixture')
 
-build_docker:
-	$(PYTHON) docker_compose up --build $(SETTINGS)
+build:
+	docker-compose up --build
+
+run_docker:
+	docker-compose up
+
 clean:
 	rm -rf $(VENV)
 	find . -type f -name '*.pyc' -delete
