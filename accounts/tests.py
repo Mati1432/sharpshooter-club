@@ -24,6 +24,24 @@ class UserTest(TestCase):
             user='Test'
         )
 
-    def test_model(self):
-        self.assertEqual(self.users.password, 'abc')
-        self.assertEqual(self.users.last_login, self.users.date_joined)
+    def test_simple_user_creation(self):
+        users = self.users
+        self.assertIsNotNone(users)
+        self.assertIsInstance(users, Users)
+        self.assertEqual(users.first_name, 'Test')
+        self.assertFalse(users.user_permissions.exists())
+        self.assertFalse(users.groups.exists())
+
+    def test_simple_user_update(self):
+        users = self.users
+        users.first_name = 'Test2'
+        users.save()
+        self.assertEqual(users.first_name, 'Test2')
+
+    def test_simple_user_delete(self):
+        Users.objects.all().delete()
+        self.assertFalse(Users.objects.exists())
+
+    def test_simple_users_retrieving(self):
+        users_get = Users.objects.get(id=self.users.id)
+        self.assertEqual(self.users.id, users_get.id)
