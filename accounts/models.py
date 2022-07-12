@@ -4,12 +4,13 @@ from django.db import models
 
 
 class Users(AbstractUser):  # noqa: D101
-    pesel = models.CharField(max_length=11, blank=True)
-    city = models.CharField(max_length=45, blank=True)
-    postal_code = models.CharField(max_length=6, blank=True)
-    street = models.CharField(max_length=45, blank=True)
-    house_number = models.CharField(max_length=45, blank=True)
-    phone = models.CharField(blank=True, max_length=15)
+    pesel = models.CharField(max_length=11)
+    birth_date = models.DateField(blank=True, null=True)
+    city = models.CharField(max_length=45)
+    postal_code = models.CharField(max_length=7)
+    street = models.CharField(max_length=45)
+    house_number = models.CharField(max_length=45)
+    phone = models.CharField(max_length=15)
     image = models.ImageField(upload_to='Images/', null=True, blank=True)
     club = models.CharField(max_length=20, blank=True)
 
