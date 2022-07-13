@@ -15,38 +15,38 @@ from accounts.models import Users
 class SignUpForm(SignupForm):  # noqa D101
     first_name = forms.CharField(
         label='First Name',
-        max_length=254
+        max_length=254,
     )
     last_name = forms.CharField(
         label='Last Name',
-        max_length=254
+        max_length=254,
     )
     city = forms.CharField(
         label='City',
-        max_length=254
+        max_length=254,
     )
     pesel = forms.CharField(
         label='Pesel',
-        max_length=11
+        max_length=11,
     )
     postal_code = forms.CharField(
         label='Postal Code',
-        max_length=7
+        max_length=7,
     )
     street = forms.CharField(
         label='Street',
-        max_length=254
+        max_length=254,
     )
     house_number = forms.CharField(
         label='House Number',
-        max_length=254
+        max_length=254,
     )
     phone = forms.CharField(
         label='Phone',
-        max_length=15
+        max_length=15,
     )
     photo = forms.ImageField(
-        required=False
+        required=False,
     )
     club = forms.CharField(
         label='Club',

@@ -1,23 +1,23 @@
-# Django
+"""Tests file."""
+# Standard Library
 import secrets
 import string
 
+# Django
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
-
-# Create your tests here.
-from django.urls import reverse
-
-from accounts.forms import SignUpForm
-from accounts.models import Users
 from django.utils import timezone
 
+# Project
+from accounts.forms import SignUpForm
+from accounts.models import Users
 
-class UserModelTest(TestCase):
-    def setUp(self):
+
+class UserModelTest(TestCase):  # noqa D101
+    def setUp(self):  # noqa D102
         self.randomize_password = ''.join((secrets.choice(
             string.ascii_letters + string.digits)
-            for i in range(20))
+            for i in range(20)),
         )
         upload_file = open(r'C:\Users\Mateusz\Desktop\test.jpg', 'rb')
         self.users = Users.objects.create(
@@ -43,7 +43,7 @@ class UserModelTest(TestCase):
 
         )
 
-    def test_simple_user_creation(self):
+    def test_simple_user_creation(self):  # noqa D102
         users = self.users
         self.assertIsNotNone(users)
         self.assertIsInstance(users, Users)
@@ -51,26 +51,26 @@ class UserModelTest(TestCase):
         self.assertFalse(users.user_permissions.exists())
         self.assertFalse(users.groups.exists())
 
-    def test_simple_user_update(self):
+    def test_simple_user_update(self):  # noqa D102
         users = self.users
         users.first_name = 'Name2'
         users.save()
         self.assertEqual(users.first_name, 'Name2')
 
-    def test_simple_user_delete(self):
+    def test_simple_user_delete(self):  # noqa D102
         Users.objects.all().delete()
         self.assertFalse(Users.objects.exists())
 
-    def test_simple_users_retrieving(self):
+    def test_simple_users_retrieving(self):  # noqa D102
         users_get = Users.objects.get(id=self.users.id)
         self.assertEqual(self.users.id, users_get.id)
 
 
-class SignUpFormTest(TestCase):
-    def setUp(self):
+class SignUpFormTest(TestCase):  # noqa D101
+    def setUp(self):  # noqa D102
         self.randomize_password = ''.join((secrets.choice(
             string.ascii_letters + string.digits)
-            for i in range(20))
+            for i in range(20)),
         )
         upload_file = open(r'C:\Users\Mateusz\Desktop\test.jpg', 'rb')
 
@@ -91,11 +91,11 @@ class SignUpFormTest(TestCase):
             'password2': self.randomize_password,
         }
 
-    def test_validate_form(self):
+    def test_validate_form(self):  # noqa D102
         form = SignUpForm(data=self.form_data)
         self.assertTrue(form.is_valid())
 
-    def test_different_password(self):
+    def test_different_password(self):  # noqa D102
         self.form_data['password2'] = self.randomize_password + self.randomize_password
         form = SignUpForm(data=self.form_data)
         self.assertFalse(form.is_valid())

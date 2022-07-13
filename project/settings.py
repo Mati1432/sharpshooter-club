@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 # Standard Library
 import os
 from pathlib import Path
+
+# 3rd-party
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -65,8 +67,7 @@ ROOT_URLCONF = 'project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR / 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR / 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -166,6 +167,7 @@ ACCOUNT_USERNAME_REQUIRED = False
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 try:
+    # Project
     from project.settings_local import *  # noqa: F401,F403
 except ImportError:
     pass
