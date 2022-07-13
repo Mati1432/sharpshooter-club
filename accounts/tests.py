@@ -8,7 +8,7 @@ from accounts.models import Users
 from django.utils import timezone
 
 
-class UserTest(TestCase):
+class UserModelTest(TestCase):
     def setUp(self):
         self.users = Users.objects.create(
             password='abc',

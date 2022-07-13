@@ -14,45 +14,46 @@ from accounts.models import Users
 
 class SignUpForm(SignupForm):  # noqa D101
     first_name = forms.CharField(
-        label='First name',
+        label='First Name',
         max_length=254
     )
     last_name = forms.CharField(
-        label='Last name',
+        label='Last Name',
         max_length=254
     )
     city = forms.CharField(
-        label='city',
+        label='City',
         max_length=254
     )
     pesel = forms.CharField(
-        label='pesel',
+        label='Pesel',
         max_length=11
     )
     postal_code = forms.CharField(
-        label='postal_code',
+        label='Postal Code',
         max_length=7
     )
     street = forms.CharField(
-        label='street',
+        label='Street',
         max_length=254
     )
     house_number = forms.CharField(
-        label='house_number',
+        label='House Number',
         max_length=254
     )
     phone = forms.CharField(
-        label='phone',
+        label='Phone',
         max_length=15
     )
-    image = forms.ImageField(
-        required=False,
+    photo = forms.ImageField(
+        required=False
     )
     club = forms.CharField(
-        label='club',
+        label='Club',
         max_length=20,
     )
     date_brith = forms.DateField(
+        label='Date Brith',
         initial=datetime.date.today,
         widget=forms.widgets.DateInput(
             attrs={'type': 'date'},
@@ -63,11 +64,11 @@ class SignUpForm(SignupForm):  # noqa D101
         fields = [
             'first_name',
             'last_name',
-            'city',
-            'date',
+            'photo',
         ]
 
     def save(self, request):  # noqa D102
+        photo = self.cleaned_data['photo']
         first_name = self.cleaned_data['first_name']
         last_name = self.cleaned_data['last_name']
         city = self.cleaned_data['city']
@@ -76,10 +77,8 @@ class SignUpForm(SignupForm):  # noqa D101
         street = self.cleaned_data['street']
         house_number = self.cleaned_data['house_number']
         phone = self.cleaned_data['phone']
-        image = self.cleaned_data['image']
         club = self.cleaned_data['club']
         date_brith = self.cleaned_data['date_brith']
-
         user = super().save(request)
 
         user.first_name = first_name
@@ -90,9 +89,9 @@ class SignUpForm(SignupForm):  # noqa D101
         user.street = street
         user.house_number = house_number
         user.phone = phone
-        user.image = image
         user.club = club
         user.birth_date = date_brith
-
+        user.photo = photo
         user.save()
+
         return user
