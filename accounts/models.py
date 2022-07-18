@@ -2,7 +2,7 @@
 # Django
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from consts import license_type_consts
+from .consts import license_type_consts
 
 
 class Users(AbstractUser):  # noqa: D101
@@ -41,7 +41,7 @@ class AchievementIndividual(models.Model):  # noqa: D101
 class AchievementCompetition(models.Model):  # noqa: D101
     name = models.CharField(max_length=45)
     date = models.DateField()
-    score = models.IntegerField()
+    score = models.DecimalField(max_digits=10, decimal_places=2)
     user_achievement_competition = models.ForeignKey(Users, on_delete=models.CASCADE, null=False)
 
     class Meta:  # noqa: D106
