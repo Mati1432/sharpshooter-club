@@ -10,7 +10,7 @@ from django.utils import timezone
 
 # Project
 from accounts.forms import SignUpForm
-from accounts.models import Users
+from accounts.models import Users, AchievementIndividual
 
 
 class UserModelTest(TestCase):  # noqa D101
@@ -40,7 +40,6 @@ class UserModelTest(TestCase):  # noqa D101
             photo=SimpleUploadedFile(upload_file.name, upload_file.read()),
             club='Club',
             birth_date='2022-07-13',
-
         )
 
     def test_simple_user_creation(self):  # noqa D102
@@ -99,3 +98,39 @@ class SignUpFormTest(TestCase):  # noqa D101
         self.form_data['password2'] = self.randomize_password + self.randomize_password
         form = SignUpForm(data=self.form_data)
         self.assertFalse(form.is_valid())
+
+
+class AchievementModelTest(TestCase):
+    def setUp(self):
+        users = UserModelTest()
+        users.setUp()
+        self.achievement = AchievementIndividual.objects.create(
+            name='Name',
+            date=timezone.now(),
+            score=47,
+            users_achievement_individual=users.users
+        )
+
+    def test_achievement_individual_model(self):
+        record = AchievementIndividual.objects.get(id=1)
+        self.assertEqual(record.name, 'Name')
+        self.assertEqual(record.date, timezone.now().date())
+        self.assertIsNotNone(record)
+        self.assertTrue(AchievementIndividual.objects.filter(name='Name').exists())
+        self.assertTrue(AchievementIndividual.objects.filter(score=47).exists())
+        self.assertTrue(AchievementIndividual.objects.filter(users_achievement_individual=1).exists())
+
+    def test_simple_user_update(self):  # noqa D102
+        achievement = self.achievement
+        achievement.name = 'Name2'
+        achievement.date = timezone.now().date()
+        achievement.score = 49
+        achievement.save()
+
+        self.assertEqual(achievement.name, 'Name2')
+        self.assertEqual(achievement.date, timezone.now().date())
+        self.assertEqual(achievement.score, 49)
+
+    def test_simple_user_delete(self):  # noqa D102
+        AchievementIndividual.objects.all().delete()
+        self.assertFalse(AchievementIndividual.objects.exists())
