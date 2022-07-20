@@ -12,6 +12,7 @@ from django.utils import timezone
 from accounts.forms import SignUpForm
 from accounts.models import AchievementCompetition
 from accounts.models import AchievementIndividual
+from accounts.models import License
 from accounts.models import Users
 
 
@@ -103,7 +104,7 @@ class SignUpFormTest(TestCase):  # noqa D101
 
 
 class AchievementIndividualModelTest(TestCase):  # noqa D101
-    def setUp(self):
+    def setUp(self):  # noqa D102
         user_model_test = UserModelTest()
         user_model_test.setUp()
         self.achievement = AchievementIndividual.objects.create(
@@ -114,13 +115,14 @@ class AchievementIndividualModelTest(TestCase):  # noqa D101
         )
 
     def test_achievement_individual_model(self):  # noqa D102
-        record = AchievementIndividual.objects.get(id=1)
-        self.assertEqual(record.name, 'Name')
-        self.assertEqual(record.date, timezone.now().date())
-        self.assertIsNotNone(record)
+        achievement = AchievementIndividual.objects.get(id=1)
+        self.assertEqual(achievement.name, 'Name')
+        self.assertEqual(achievement.date, timezone.now().date())
+        self.assertIsNotNone(achievement)
         self.assertTrue(AchievementIndividual.objects.filter(name='Name').exists())
         self.assertTrue(AchievementIndividual.objects.filter(score=47).exists())
-        self.assertTrue(AchievementIndividual.objects.filter(users_achievement_individual=4).exists())
+        self.assertTrue(AchievementIndividual.objects.filter(
+            users_achievement_individual=achievement.users_achievement_individual.id).exists())
 
     def test_simple_achivement_update(self):  # noqa D102
         achievement = self.achievement
@@ -132,14 +134,15 @@ class AchievementIndividualModelTest(TestCase):  # noqa D101
         self.assertEqual(achievement.name, 'Name2')
         self.assertEqual(achievement.date, timezone.now().date())
         self.assertEqual(achievement.score, 49)
+        self.assertFalse(AchievementIndividual.objects.filter(name='Name').exists())
 
     def test_simple_achivement_delete(self):  # noqa D102
         AchievementIndividual.objects.all().delete()
         self.assertFalse(AchievementIndividual.objects.exists())
 
 
-class AchievementCompetitionModelTest(TestCase):
-    def setUp(self):
+class AchievementCompetitionModelTest(TestCase):  # noqa D101
+    def setUp(self):  # noqa D102
         user_model_test = UserModelTest()
         user_model_test.setUp()
 
@@ -147,17 +150,18 @@ class AchievementCompetitionModelTest(TestCase):
             name='Name Competition',
             date=timezone.now(),
             score=52,
-            user_achievement_competition=user_model_test.users
+            user_achievement_competition=user_model_test.users,
         )
 
-    def test_achievement_competition_model(self):
+    def test_achievement_competition_model(self):  # noqa D102
         achievement = AchievementCompetition.objects.get(id=1)
         self.assertEqual(achievement.name, 'Name Competition')
         self.assertIsNotNone(achievement)
         self.assertEqual(achievement.date, timezone.now().date())
         self.assertTrue(AchievementCompetition.objects.filter(name='Name Competition').exists())
         self.assertTrue(AchievementCompetition.objects.filter(score=52).exists())
-        self.assertTrue(AchievementCompetition.objects.filter(user_achievement_competition=1).exists())
+        self.assertTrue(AchievementCompetition.objects.filter(
+            user_achievement_competition=achievement.user_achievement_competition.id).exists())
 
     def test_simple_competition_update(self):  # noqa D102
         achievement = self.achievement_competition
@@ -169,7 +173,45 @@ class AchievementCompetitionModelTest(TestCase):
         self.assertEqual(achievement.name, 'Name2')
         self.assertEqual(achievement.date, timezone.now().date())
         self.assertEqual(achievement.score, 53)
+        self.assertFalse(AchievementCompetition.objects.filter(name='Name Competition').exists())
 
     def test_simple_competition_delete(self):  # noqa D102
         AchievementCompetition.objects.all().delete()
         self.assertFalse(AchievementCompetition.objects.exists())
+
+
+class LicenseModelTest(TestCase):  # noqa D101
+    def setUp(self):  # noqa D102
+        user_model_test = UserModelTest()
+        user_model_test.setUp()
+        self.license = License.objects.create(
+            license_is_active=False,
+            date=timezone.now().date(),
+            license_type='Rifle',
+            user_license=user_model_test.users,
+        )
+
+    def test_simple_license_model(self):  # noqa D102
+        license_user = self.license
+        self.assertEqual(license_user.license_is_active, False)
+        self.assertEqual(license_user.date, timezone.now().date())
+        self.assertIsNotNone(license_user)
+        self.assertTrue(License.objects.all().exists())
+        self.assertTrue(License.objects.filter(license_type='Rifle').exists())
+        self.assertTrue(License.objects.filter(user_license=license_user.user_license.id).exists())
+
+    def test_simple_license_update(self):  # noqa D102
+        license_user = self.license
+        license_user.license_is_active = True
+        license_user.license_type = 'Pistol'
+        license_user.save()
+
+        self.assertEqual(license_user.license_is_active, True)
+        self.assertEqual(license_user.date, timezone.now().date())
+        self.assertEqual(license_user.license_type, 'Pistol')
+        self.assertFalse(License.objects.filter(license_type='Rifle').exists())
+
+    def test_simple_license_delete(self):  # noqa D102
+        license_user = self.license
+        license_user.delete()
+        self.assertFalse(License.objects.all().exists())
