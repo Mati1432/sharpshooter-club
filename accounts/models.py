@@ -23,7 +23,7 @@ class Users(AbstractUser):  # noqa: D101
         verbose_name_plural = 'Users'
 
     def __str__(self):  # noqa: D105
-        return f'{self.first_name} {self.last_name} {self.email}'
+        return f'{self.first_name} {self.last_name} {self.email} {self.pesel}'
 
 
 class AchievementIndividual(models.Model):  # noqa: D101

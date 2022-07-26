@@ -11,6 +11,7 @@ class UsersAdmin(admin.ModelAdmin):  # noqa D101
     list_display = [
         'first_name',
         'last_name',
+        'email',
         'pesel',
         'city',
         'postal_code',
@@ -22,6 +23,7 @@ class UsersAdmin(admin.ModelAdmin):  # noqa D101
     ]
     list_display_links = (
         'last_name',
+        'email',
     )
     list_editable = [
         'pesel',
