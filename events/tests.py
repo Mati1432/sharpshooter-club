@@ -1,10 +1,13 @@
+"""Tests.py files."""
+# Standard Library
+from datetime import datetime
+from datetime import timedelta
+
 # Django
-from datetime import datetime, timedelta
-
 from django.test import TestCase
-
 from django.utils import timezone
 
+# Project
 from events.models import Events
 
 
@@ -17,10 +20,10 @@ class EventsModelTest(TestCase):  # noqa D101
             street='Test Street',
             club_member=4,
             outsider=7,
-            number_all_participants=11
+            number_all_participants=11,
         )
 
-    def test_simple_events_create(self):
+    def test_simple_events_create(self):  # noqa D102
         events = self.events
         self.assertEqual(events.name, 'Test Name')
         self.assertEqual(events.date, datetime.now(tz=timezone.utc).isoformat(' ', 'seconds'))
@@ -28,7 +31,7 @@ class EventsModelTest(TestCase):  # noqa D101
         self.assertFalse(Events.objects.filter(name='Test Name2').exists())
         self.assertTrue(Events.objects.filter(number_all_participants=11).exists())
 
-    def test_simple_events_update(self):
+    def test_simple_events_update(self):  # noqa D102
         events = self.events
         events.city = 'Test City2'
         events.street = 'Test Street'
@@ -44,7 +47,7 @@ class EventsModelTest(TestCase):  # noqa D101
         events_get = Events.objects.get(id=self.events.id)
         self.assertEqual(self.events.id, events_get.id)
 
-    def test_simple_events_delete(self):
+    def test_simple_events_delete(self):  # noqa D102
         events_delete = Events.objects.filter(id=self.events.id)
         events_delete.delete()
         self.assertFalse(events_delete.exists())

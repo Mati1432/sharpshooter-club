@@ -1,3 +1,4 @@
+"""Models.py file."""
 # Django
 from django.db import models
 
@@ -22,7 +23,7 @@ class Events(models.Model):  # noqa: D101
         return f'{self.name} {self.number_all_participants}'
 
 
-class Competition(models.Model):
+class Competition(models.Model):  # noqa: D101
     name = models.CharField(max_length=45)
     code = models.CharField(max_length=5)
     self_weapon_first = models.DecimalField(max_digits=10, decimal_places=2)
@@ -53,7 +54,7 @@ class StarterList(models.Model):  # noqa: D101
         return f'{self.score} {self.users.first_name} {self.users.last_name}'
 
 
-class Judge(models.Model):
+class Judge(models.Model):  # noqa: D101
     is_judge = models.BooleanField()
     starter_list = models.ForeignKey(StarterList, on_delete=models.CASCADE)
 
